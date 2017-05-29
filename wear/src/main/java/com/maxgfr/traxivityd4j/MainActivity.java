@@ -42,7 +42,7 @@ public class MainActivity extends WearableActivity {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                createAndUseNetwork();
+                buildNetwork();
             }
         });
     }
@@ -78,7 +78,7 @@ public class MainActivity extends WearableActivity {
             mClockView.setVisibility(View.GONE);
         }
     }
-    private void createAndUseNetwork() {
+    private void buildNetwork() {
         DenseLayer inputLayer = new DenseLayer.Builder()
                 .nIn(2)
                 .nOut(3)
