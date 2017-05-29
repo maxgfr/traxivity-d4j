@@ -1,4 +1,4 @@
-package com.maxgfr.traxivityd4j;
+package com.maxgfr.traxivityd4j.deeplearning;
 
 /**
  * Created by maxime on 28-May-17.

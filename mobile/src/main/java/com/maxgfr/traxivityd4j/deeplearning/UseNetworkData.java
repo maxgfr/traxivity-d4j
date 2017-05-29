@@ -1,4 +1,4 @@
-package com.maxgfr.traxivityd4j;
+package com.maxgfr.traxivityd4j.deeplearning;
 
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
