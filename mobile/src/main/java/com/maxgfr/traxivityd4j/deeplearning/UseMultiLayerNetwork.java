@@ -5,4 +5,5 @@ package com.maxgfr.traxivityd4j.deeplearning;
  */
 
 public class UseMultiLayerNetwork {
+
 }
