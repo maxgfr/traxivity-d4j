@@ -39,12 +39,12 @@ public class MainActivity extends WearableActivity {
         mContainerView = (BoxInsetLayout) findViewById(R.id.container);
         mTextView = (TextView) findViewById(R.id.text);
         mClockView = (TextView) findViewById(R.id.clock);
-        AsyncTask.execute(new Runnable() {
+        /*AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 buildNetwork();
             }
-        });
+        });*/
     }
 
     @Override
