@@ -9,12 +9,12 @@ import java.util.Map;
  * Created by maxime on 29-May-17.
  */
 
-public class Activity implements LearnableModel {
+public class Accelerometer implements LearnableModel {
     private int type;
     private int choice;
     private int probability;
 
-    public Activity(int type, int salary, int choice) {
+    public Accelerometer(int type, int salary, int choice) {
         this.type = type;
         this.choice = choice;
     }
