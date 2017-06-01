@@ -25,7 +25,7 @@ import java.util.List;
 
 public class DataClassifier {
 
-    private final String TAG = "UseMultiLayerNetwork";
+    private final String TAG = "DataClassifier";
 
     private int labelsCount;
     private int featuresCount;

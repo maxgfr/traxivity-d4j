@@ -3,6 +3,10 @@ package com.maxgfr.traxivityd4j;
 import android.os.Bundle;
 import android.util.Log;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
+import android.widget.TextView;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
 import org.deeplearning4j.nn.conf.layers.DenseLayer;
@@ -15,6 +19,10 @@ import org.nd4j.linalg.factory.Nd4j;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Button button;
+
+    private TextView textView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +33,19 @@ public class MainActivity extends AppCompatActivity {
                 buildNetwork();
             }
         });*/
+
+        button = (Button) findViewById(R.id.button);
+
+        textView = (TextView) findViewById(R.id.textView);
+
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                textView.setText("lol");
+            }
+        });
     }
+
 
     private void buildNetwork() {
         DenseLayer inputLayer = new DenseLayer.Builder()
