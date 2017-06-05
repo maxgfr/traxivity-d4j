@@ -8,15 +8,11 @@ import android.widget.TextView;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.maxgfr.traxivityd4j.deeplearning.LoadMultiLayerNetwork;
-
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,8 +52,14 @@ public class MainActivity extends AppCompatActivity {
         buttonLoadNetwork.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                boolean b = loadNetwork();
 
-                textViewLoadNetwork.setText("Network loaded");
+                if (b) {
+                    textViewLoadNetwork.setText("Network loaded");
+                } else {
+                    textViewLoadNetwork.setText("Error Network numm");
+                }
+
             }
         });
 
@@ -73,49 +75,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
 
+
             }
         });
     }
 
-    private void loadNetwork () {
+    private boolean loadNetwork () {
 
-        File locationNetwork = null;
-        OutputStream outputStream = null;
-        InputStream inputStream = null;
-        LoadMultiLayerNetwork l = LoadMultiLayerNetwork.getInstance();
+        LoadMultiLayerNetwork loadMultiLayerNetwork = LoadMultiLayerNetwork.getInstance();
+
+        InputStream inputStream = getResources().openRawResource(R.raw.network_d4j);
+
+        File file = loadMultiLayerNetwork.fileGenerate(inputStream);
 
         try {
-            inputStream = getResources().openRawResource(R.raw.network_d4j);
-            outputStream = new FileOutputStream(locationNetwork);
-            int read = 0;
-            byte[] bytes = new byte[1024];
-
-            while ((read = inputStream.read(bytes)) != -1) {
-                outputStream.write(bytes, 0, read);
-            }
-
-            network = l.loadModelFromFile(locationNetwork);
-
+            network = loadMultiLayerNetwork.loadModelFromFile(file);
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (outputStream != null) {
-                try {
-                    // outputStream.flush();
-                    outputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
         }
+
+        if (network == null) {
+            return false;
+        }
+
+        return true;
+
     }
 
 }
