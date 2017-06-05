@@ -4,13 +4,13 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
     defaultConfig {
-        multiDexEnabled true
         applicationId "com.example.maxime.myapplication"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -29,6 +29,9 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/INDEX.LIST'
+    }
+    configurations {
+        all*.exclude group: 'org.bytedeco.javacpp-presets', module: 'opencv'
     }
 
 }

@@ -9,7 +9,7 @@ import java.util.List;
  * Created by maxime on 29-May-17.
  */
 
-public class AccelerometerDataBase {
+public class ActivityDataBase {
     private static List<LearnableModel> savedModels = new LinkedList<>();
 
     public static void writeActivity(List<LearnableModel> models) {

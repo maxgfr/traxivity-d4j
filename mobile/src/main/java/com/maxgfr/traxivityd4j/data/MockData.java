@@ -2,19 +2,6 @@ package com.maxgfr.traxivityd4j.data;
 
 import com.maxgfr.traxivityd4j.deeplearning.LearnableModel;
 
-import org.datavec.api.records.reader.RecordReader;
-import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
-import org.datavec.api.split.FileSplit;
-import org.deeplearning4j.datasets.datavec.RecordReaderDataSetIterator;
-import org.deeplearning4j.eval.Evaluation;
-import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.nd4j.linalg.api.iter.NdIndexIterator;
-import org.nd4j.linalg.api.ndarray.INDArray;
-import org.nd4j.linalg.dataset.api.DataSet;
-import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
-import org.nd4j.linalg.io.ClassPathResource;
-
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,45 +10,117 @@ import java.util.List;
  */
 
 public class MockData {
-
-    private int labelIndex;
-    private int numClasses;
-    private int batchSize;
-
-    public MockData (int labelIndex, int numClasses, int batchSize) {
-        this.labelIndex = labelIndex;
-        this.numClasses = numClasses;
-        this.batchSize = batchSize;
-    }
-
-    public List<LearnableModel> createData (MultiLayerNetwork network, String path) throws IOException, InterruptedException {
-
+    public static List<LearnableModel> mockSet() {
         List<LearnableModel> trainSet = new LinkedList<LearnableModel>();
-        int numLinesToSkip = 0;
-        String delimiter = ",";
-        int nRows = 2;
-        int nCols = 2;
 
-        // Read the txt file as a collection of records
-        RecordReader recordReader = new CSVRecordReader(numLinesToSkip,delimiter);
-        recordReader.initialize(new FileSplit(new ClassPathResource(path).getFile()));
+        //Mechanic likes from 6 up
+        trainSet.add(new Activity(0,5,0));
+        trainSet.add(new Activity(0,6,1));
+        trainSet.add(new Activity(0,7,1));
+        trainSet.add(new Activity(0,8,1));
+        trainSet.add(new Activity(0,9,1));
+        trainSet.add(new Activity(0,10,1));
+        trainSet.add(new Activity(0,11,1));
+        trainSet.add(new Activity(0,12,1));
+        trainSet.add(new Activity(0,13,1));
+        trainSet.add(new Activity(0,14,1));
+        trainSet.add(new Activity(0,15,1));
+        trainSet.add(new Activity(0,16,1));
+        trainSet.add(new Activity(0,17,1));
+        trainSet.add(new Activity(0,18,1));
+        trainSet.add(new Activity(0,19,1));
+        trainSet.add(new Activity(0,20,1));
 
-        //Take the data
-        DataSetIterator iterator = new RecordReaderDataSetIterator(recordReader,batchSize,labelIndex,numClasses);
-        DataSet allData = iterator.next();
-        allData.shuffle();
+        //Programmer likes from 8 up
+        trainSet.add(new Activity(1,5,0));
+        trainSet.add(new Activity(1,6,0));
+        trainSet.add(new Activity(1,7,0));
+        trainSet.add(new Activity(1,8,1));
+        trainSet.add(new Activity(1,9,1));
+        trainSet.add(new Activity(1,10,1));
+        trainSet.add(new Activity(1,11,1));
+        trainSet.add(new Activity(1,12,1));
+        trainSet.add(new Activity(1,13,1));
+        trainSet.add(new Activity(1,14,1));
+        trainSet.add(new Activity(1,15,1));
+        trainSet.add(new Activity(1,16,1));
+        trainSet.add(new Activity(0,17,1));
+        trainSet.add(new Activity(0,18,1));
+        trainSet.add(new Activity(0,19,1));
+        trainSet.add(new Activity(0,20,1));
 
-        INDArray output = network.output(allData.getFeatureMatrix());
+        //Teacher likes from 10 up
+        trainSet.add(new Activity(2,5,0));
+        trainSet.add(new Activity(2,6,0));
+        trainSet.add(new Activity(2,7,0));
+        trainSet.add(new Activity(2,8,0));
+        trainSet.add(new Activity(2,9,0));
+        trainSet.add(new Activity(2,10,1));
+        trainSet.add(new Activity(2,11,1));
+        trainSet.add(new Activity(2,12,1));
+        trainSet.add(new Activity(2,13,1));
+        trainSet.add(new Activity(2,14,1));
+        trainSet.add(new Activity(2,15,1));
+        trainSet.add(new Activity(2,16,1));
+        trainSet.add(new Activity(0,17,1));
+        trainSet.add(new Activity(0,18,1));
+        trainSet.add(new Activity(0,19,1));
+        trainSet.add(new Activity(0,20,1));
 
+        //Taxi driver likes from 12 up
+        trainSet.add(new Activity(3,5,0));
+        trainSet.add(new Activity(3,6,0));
+        trainSet.add(new Activity(3,7,0));
+        trainSet.add(new Activity(3,8,0));
+        trainSet.add(new Activity(3,9,0));
+        trainSet.add(new Activity(3,10,0));
+        trainSet.add(new Activity(3,11,0));
+        trainSet.add(new Activity(3,12,1));
+        trainSet.add(new Activity(3,13,1));
+        trainSet.add(new Activity(3,14,1));
+        trainSet.add(new Activity(3,15,1));
+        trainSet.add(new Activity(3,16,1));
+        trainSet.add(new Activity(0,17,1));
+        trainSet.add(new Activity(0,18,1));
+        trainSet.add(new Activity(0,19,1));
+        trainSet.add(new Activity(0,20,1));
 
-        NdIndexIterator iter = new NdIndexIterator(nRows, nCols);
-        while (iter.hasNext()) {
-            int[] nextIndex = iter.next();
-            double nextVal = output.getDouble(nextIndex);
-            trainSet.add(new Accelerometer((int)nextVal,0,0));
-        }
+        //Manager likes likes from 14 up
+        trainSet.add(new Activity(4,5,0));
+        trainSet.add(new Activity(4,6,0));
+        trainSet.add(new Activity(4,7,0));
+        trainSet.add(new Activity(4,8,0));
+        trainSet.add(new Activity(4,9,0));
+        trainSet.add(new Activity(4,10,0));
+        trainSet.add(new Activity(4,11,0));
+        trainSet.add(new Activity(4,12,0));
+        trainSet.add(new Activity(4,13,0));
+        trainSet.add(new Activity(4,14,1));
+        trainSet.add(new Activity(4,15,1));
+        trainSet.add(new Activity(4,16,1));
+        trainSet.add(new Activity(0,17,1));
+        trainSet.add(new Activity(0,18,1));
+        trainSet.add(new Activity(0,19,1));
+        trainSet.add(new Activity(0,20,1));
+
+        //Carpenter likes from 16 up
+        trainSet.add(new Activity(5,5,0));
+        trainSet.add(new Activity(5,6,0));
+        trainSet.add(new Activity(5,7,0));
+        trainSet.add(new Activity(5,8,0));
+        trainSet.add(new Activity(5,9,0));
+        trainSet.add(new Activity(5,10,0));
+        trainSet.add(new Activity(5,11,0));
+        trainSet.add(new Activity(5,12,0));
+        trainSet.add(new Activity(5,13,0));
+        trainSet.add(new Activity(5,14,0));
+        trainSet.add(new Activity(5,15,0));
+        trainSet.add(new Activity(5,16,1));
+        trainSet.add(new Activity(0,17,1));
+        trainSet.add(new Activity(0,18,1));
+        trainSet.add(new Activity(0,19,1));
+        trainSet.add(new Activity(0,20,1));
 
         return trainSet;
     }
-
 }

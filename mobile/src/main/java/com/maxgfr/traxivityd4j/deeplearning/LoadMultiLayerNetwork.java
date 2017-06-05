@@ -44,8 +44,34 @@ public class LoadMultiLayerNetwork {
         return restored;
     }
 
-    public MultiLayerNetwork loadModelFromKeras (String path) throws UnsupportedKerasConfigurationException, IOException, InvalidKerasConfigurationException {
+    public MultiLayerNetwork loadModelFromKeras (String path) throws IOException, InterruptedException, InvalidKerasConfigurationException, UnsupportedKerasConfigurationException {
         MultiLayerNetwork network = KerasModelImport.importKerasSequentialModelAndWeights(path);
+
+        int numLinesToSkip = 0;
+        String delimiter = ",";
+        // Read the iris.txt file as a collection of records
+        RecordReader recordReader = new CSVRecordReader(numLinesToSkip,delimiter);
+        recordReader.initialize(new FileSplit(new ClassPathResource("iris.txt").getFile()));
+
+        // label index
+        int labelIndex = 4;
+        // num of classes
+        int numClasses = 3;
+        // batchsize all
+        int batchSize = 150;
+
+        DataSetIterator iterator = new RecordReaderDataSetIterator(recordReader,batchSize,labelIndex,numClasses);
+
+        DataSet allData = iterator.next();
+        allData.shuffle();
+
+        // Have our model
+        //we have our Record Reader to read data
+        // Evaluate the model
+
+        Evaluation eval = new Evaluation(3);
+        INDArray output = network.output(allData.getFeatureMatrix());
+        eval.eval(allData.getLabels(),output);
         return network;
     }
 

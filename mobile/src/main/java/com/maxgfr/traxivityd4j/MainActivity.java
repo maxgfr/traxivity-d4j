@@ -1,6 +1,7 @@
 package com.maxgfr.traxivityd4j;
 
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
@@ -8,6 +9,23 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.maxgfr.traxivityd4j.deeplearning.LoadMultiLayerNetwork;
+=======
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.util.Log;
+import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import com.maxgfr.traxivityd4j.deeplearning.BinaryClassifier;
+import com.maxgfr.traxivityd4j.deeplearning.LearnableModel;
+>>>>>>> parent of ce760d7... :shark:
 
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 
@@ -19,6 +37,7 @@ import java.io.OutputStream;
 
 public class MainActivity extends AppCompatActivity {
 
+<<<<<<< HEAD
     private Button buttonLoadNetwork;
 
     private TextView textViewLoadNetwork;
@@ -30,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonTestNetwork;
 
     private MultiLayerNetwork network;
+=======
+    private BinaryClassifier binaryClassifier;
+    private int inputs = 2;
+    private int outputs = 1;
+>>>>>>> parent of ce760d7... :shark:
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
