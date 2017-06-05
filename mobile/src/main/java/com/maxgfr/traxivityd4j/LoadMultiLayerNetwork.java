@@ -37,7 +37,7 @@ public class LoadMultiLayerNetwork {
 
     public File fileGenerate (InputStream inputStream) {
 
-        File locationNetwork = new File("./");
+        File locationNetwork = new File("src/res/");
         OutputStream outputStream = null;
 
         try {

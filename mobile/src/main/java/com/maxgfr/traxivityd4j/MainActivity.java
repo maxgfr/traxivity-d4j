@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 if (b) {
                     textViewLoadNetwork.setText("Network loaded");
                 } else {
-                    textViewLoadNetwork.setText("Error Network numm");
+                    textViewLoadNetwork.setText("Error Network null...");
                 }
 
             }
@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
         InputStream inputStream = getResources().openRawResource(R.raw.network_d4j);
 
         File file = loadMultiLayerNetwork.fileGenerate(inputStream);
+
+        System.out.println(file.getAbsolutePath() + file.getName());
 
         try {
             network = loadMultiLayerNetwork.loadModelFromFile(file);
