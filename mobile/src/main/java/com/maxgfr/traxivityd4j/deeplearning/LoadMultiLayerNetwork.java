@@ -5,9 +5,6 @@ import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
 import org.datavec.api.split.FileSplit;
 import org.deeplearning4j.datasets.datavec.RecordReaderDataSetIterator;
 import org.deeplearning4j.eval.Evaluation;
-import org.deeplearning4j.nn.modelimport.keras.InvalidKerasConfigurationException;
-import org.deeplearning4j.nn.modelimport.keras.KerasModelImport;
-import org.deeplearning4j.nn.modelimport.keras.UnsupportedKerasConfigurationException;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.util.ModelSerializer;
 import org.nd4j.linalg.api.ndarray.INDArray;
@@ -44,7 +41,8 @@ public class LoadMultiLayerNetwork {
         return restored;
     }
 
-    public MultiLayerNetwork loadModelFromKeras (String path) throws IOException, InterruptedException, InvalidKerasConfigurationException, UnsupportedKerasConfigurationException {
+
+    /*public MultiLayerNetwork loadModelFromKeras (String path) throws UnsupportedKerasConfigurationException, IOException, InvalidKerasConfigurationException {
         MultiLayerNetwork network = KerasModelImport.importKerasSequentialModelAndWeights(path);
 
         int numLinesToSkip = 0;
@@ -73,6 +71,6 @@ public class LoadMultiLayerNetwork {
         INDArray output = network.output(allData.getFeatureMatrix());
         eval.eval(allData.getLabels(),output);
         return network;
-    }
+    }*/
 
 }

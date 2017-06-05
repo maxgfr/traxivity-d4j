@@ -6,44 +6,44 @@
     android:layout_height="match_parent"
     tools:context="com.maxgfr.traxivityd4j.MainActivity">
 
-    <Button
-        android:id="@+id/buttonLoadNetwork"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/buttonLoadNetwork"
-        tools:layout_editor_absoluteY="47dp"
-        tools:layout_editor_absoluteX="128dp" />
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textViewLoadNetwork"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/textViewLoadNetwork"
-        tools:layout_editor_absoluteX="124dp"
-        tools:layout_editor_absoluteY="118dp" />
+        <Button
+            android:id="@+id/buttonLoadNetwork"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonLoadNetwork" />
 
-    <Button
-        android:id="@+id/buttonLoadData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/buttonLoadData"
-        tools:layout_editor_absoluteX="142dp"
-        tools:layout_editor_absoluteY="184dp" />
+        <TextView
+            android:id="@+id/textViewLoadNetwork"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textViewLoadNetwork"
+            android:gravity="center_horizontal"/>
 
-    <TextView
-        android:id="@+id/textViewLoadData"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:text="@string/textViewLoadData"
-        tools:layout_editor_absoluteX="136dp"
-        tools:layout_editor_absoluteY="258dp" />
+        <Button
+            android:id="@+id/buttonLoadData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonLoadData" />
 
-    <Button
-        android:id="@+id/buttonTestNetwork"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/buttonTestNetwork"
-        tools:layout_editor_absoluteY="341dp"
-        tools:layout_editor_absoluteX="128dp" />
+        <TextView
+            android:id="@+id/textViewLoadData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textViewLoadData"
+            android:gravity="center_horizontal"/>
+
+        <Button
+            android:id="@+id/buttonTestNetwork"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonTestNetwork" />
+    </TableLayout>
+
+
 
 </android.support.constraint.ConstraintLayout>
