@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    tools:context="com.maxgfr.traxivityd4j.MainActivity">
 
+    <Button
+        android:id="@+id/buttonLoadNetwork"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/buttonLoadNetwork"
+        tools:layout_editor_absoluteY="47dp"
+        tools:layout_editor_absoluteX="128dp" />
 
-    <include layout="@layout/content_main" />
+    <TextView
+        android:id="@+id/textViewLoadNetwork"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/textViewLoadNetwork"
+        tools:layout_editor_absoluteX="124dp"
+        tools:layout_editor_absoluteY="118dp" />
 
-</android.support.v4.widget.DrawerLayout>
+    <Button
+        android:id="@+id/buttonLoadData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/buttonLoadData"
+        tools:layout_editor_absoluteX="142dp"
+        tools:layout_editor_absoluteY="184dp" />
+
+    <TextView
+        android:id="@+id/textViewLoadData"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="@string/textViewLoadData"
+        tools:layout_editor_absoluteX="136dp"
+        tools:layout_editor_absoluteY="258dp" />
+
+    <Button
+        android:id="@+id/buttonTestNetwork"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/buttonTestNetwork"
+        tools:layout_editor_absoluteY="341dp"
+        tools:layout_editor_absoluteX="128dp" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">TraxivityD4J</string>
-    <string name="action_settings">Settings</string>
+    <string name="buttonLoadNetwork">Load Network</string>
+    <string name="textViewLoadNetwork">Network is not loaded</string>
+    <string name="buttonLoadData">Load Data</string>
+    <string name="textViewLoadData">Data is not loaded</string>
+    <string name="buttonTestNetwork">Test Network</string>
 </resources>

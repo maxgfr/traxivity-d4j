@@ -1,126 +1,120 @@
 package com.maxgfr.traxivityd4j;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
-import org.deeplearning4j.nn.conf.layers.DenseLayer;
-import org.deeplearning4j.nn.conf.layers.OutputLayer;
+import com.maxgfr.traxivityd4j.deeplearning.LoadMultiLayerNetwork;
+
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.nd4j.linalg.activations.Activation;
-import org.nd4j.linalg.api.ndarray.INDArray;
-import org.nd4j.linalg.dataset.DataSet;
-import org.nd4j.linalg.factory.Nd4j;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button button;
+    private Button buttonLoadNetwork;
 
-    private TextView textView;
+    private TextView textViewLoadNetwork;
+
+    private Button buttonLoadData;
+
+    private TextView textViewLoadData;
+
+    private Button buttonTestNetwork;
+
+    private MultiLayerNetwork network;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                buildNetwork();
-            }
-        });*/
 
-        button = (Button) findViewById(R.id.button);
+        buttonLoadNetwork = (Button) findViewById(R.id.buttonLoadNetwork);
 
-        textView = (TextView) findViewById(R.id.textView);
+        textViewLoadNetwork = (TextView) findViewById(R.id.textViewLoadNetwork);
 
-        button.setOnClickListener(new OnClickListener() {
+        buttonLoadData = (Button) findViewById(R.id.buttonLoadData);
+
+        textViewLoadData = (TextView) findViewById(R.id.textViewLoadData);
+
+        buttonTestNetwork = (Button) findViewById(R.id.buttonTestNetwork);
+
+        initializeButton();;
+
+    }
+
+    private void initializeButton () {
+        buttonLoadNetwork.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                textView.setText("lol");
+
+                textViewLoadNetwork.setText("Network loaded");
+            }
+        });
+
+        buttonLoadData.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+
+                textViewLoadData.setText("Data loaded");
+            }
+        });
+
+        buttonTestNetwork.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+
             }
         });
     }
 
+    private void loadNetwork () {
 
-    private void buildNetwork() {
-        DenseLayer inputLayer = new DenseLayer.Builder()
-                .nIn(2)
-                .nOut(3)
-                .name("Input")
-                .build();
+        File locationNetwork = null;
+        OutputStream outputStream = null;
+        InputStream inputStream = null;
+        LoadMultiLayerNetwork l = LoadMultiLayerNetwork.getInstance();
 
-        DenseLayer hiddenLayer = new DenseLayer.Builder()
-                .nIn(3)
-                .nOut(2)
-                .name("Hidden")
-                .build();
+        try {
+            inputStream = getResources().openRawResource(R.raw.network_d4j);
+            outputStream = new FileOutputStream(locationNetwork);
+            int read = 0;
+            byte[] bytes = new byte[1024];
 
-        OutputLayer outputLayer = new OutputLayer.Builder()
-                .nIn(2)
-                .nOut(2)
-                .name("Output")
-                .activation(Activation.SOFTMAX)
-                .build();
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
 
-        NeuralNetConfiguration.Builder nncBuilder = new NeuralNetConfiguration.Builder();
-        nncBuilder.iterations(60000);
-        nncBuilder.learningRate(0.1);
+            network = l.loadModelFromFile(locationNetwork);
 
-        NeuralNetConfiguration.ListBuilder listBuilder = nncBuilder.list();
-        listBuilder.layer(0, inputLayer);
-        listBuilder.layer(1, hiddenLayer);
-        listBuilder.layer(2, outputLayer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (outputStream != null) {
+                try {
+                    // outputStream.flush();
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-        listBuilder.backprop(true);
-
-        MultiLayerNetwork myNetwork = new MultiLayerNetwork(listBuilder.build());
-        myNetwork.init();
-
-        final int NUM_SAMPLES = 4;
-
-        INDArray trainingInputs = Nd4j.zeros(NUM_SAMPLES, inputLayer.getNIn());
-        INDArray trainingOutputs = Nd4j.zeros(NUM_SAMPLES, outputLayer.getNOut());
-
-        // If 0,0 show 0
-        trainingInputs.putScalar(new int[]{0,0}, 0);
-        trainingInputs.putScalar(new int[]{0,1}, 0);
-        trainingOutputs.putScalar(new int[]{0,0}, 0);
-        trainingOutputs.putScalar(new int[]{0,1}, 1);
-
-        // If 0,1 show 1
-        trainingInputs.putScalar(new int[]{1,0}, 0);
-        trainingInputs.putScalar(new int[]{1,1}, 1);
-        trainingOutputs.putScalar(new int[]{1,0}, 1);
-        trainingOutputs.putScalar(new int[]{1,1}, 0);
-
-        // If 1,0 show 1
-        trainingInputs.putScalar(new int[]{2,0}, 1);
-        trainingInputs.putScalar(new int[]{2,1}, 0);
-        trainingOutputs.putScalar(new int[]{2,0}, 1);
-        trainingOutputs.putScalar(new int[]{2,1}, 0);
-
-        // If 1,1 show 0
-        trainingInputs.putScalar(new int[]{3,0}, 1);
-        trainingInputs.putScalar(new int[]{3,1}, 1);
-        trainingOutputs.putScalar(new int[]{3,0}, 0);
-        trainingOutputs.putScalar(new int[]{3,1}, 1);
-
-        DataSet myData = new DataSet(trainingInputs, trainingOutputs);
-        myNetwork.fit(myData);
-
-        // Create input
-        INDArray actualInput = Nd4j.zeros(1,2);
-        actualInput.putScalar(new int[]{0,0}, 1);
-        actualInput.putScalar(new int[]{0,1}, 1);
-
-        // Generate output
-        INDArray actualOutput = myNetwork.output(actualInput);
-        Log.d("myNetwork Output", actualOutput.toString());
+            }
+        }
     }
 
 }
