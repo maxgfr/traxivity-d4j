@@ -86,12 +86,8 @@ public class MainActivity extends AppCompatActivity {
 
         InputStream inputStream = getResources().openRawResource(R.raw.network_d4j);
 
-        File file = loadMultiLayerNetwork.fileGenerate(inputStream);
-
-        System.out.println(file.getAbsolutePath() + file.getName());
-
         try {
-            network = loadMultiLayerNetwork.loadModelFromFile(file);
+            network = loadMultiLayerNetwork.loadModelFromFile(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
