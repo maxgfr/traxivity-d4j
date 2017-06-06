@@ -4,10 +4,16 @@
     <string name="textViewLoadD4J">D4J model is not loaded</string>
     <string name="buttonLoadKeras">Load Keras model</string>
     <string name="textViewLoadKeras">Keras model is not loaded</string>
-    <string name="buttonLoadData">Load Data</string>
+    <string name="buttonLoadWalking">Walking</string>
+    <string name="buttonLoadUpstairs">Upstairs</string>
+    <string name="buttonLoadStanding">Standing</string>
+    <string name="buttonLoadSitting">Sitting</string>
+    <string name="buttonLoadJogging">Jogging</string>
+    <string name="buttonLoadDownstairs">Downstairs</string>
     <string name="textViewLoadData">Data is not loaded</string>
     <string name="buttonTestD4J">Test D4J network</string>
     <string name="textViewTestD4J">D4J model is not tested</string>
     <string name="buttonTestKeras">Test Keras network</string>
     <string name="textViewTestKeras">Keras model is not tested</string>
+
 </resources>

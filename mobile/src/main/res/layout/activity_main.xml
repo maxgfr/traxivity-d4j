@@ -37,11 +37,45 @@
             android:text="@string/textViewLoadKeras"
             android:gravity="center_horizontal"/>
 
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="wrap_content" android:orientation="horizontal"
+            android:layout_width="fill_parent">
+            <Button
+                android:id="@+id/buttonLoadDownstairs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/buttonLoadDownstairs" />
+            <Button
+                android:id="@+id/buttonLoadJogging"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/buttonLoadJogging" />
+            <Button
+                android:id="@+id/buttonLoadSitting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/buttonLoadSitting" />
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="wrap_content" android:orientation="horizontal"
+            android:layout_width="fill_parent">
         <Button
-            android:id="@+id/buttonLoadData"
+            android:id="@+id/buttonLoadStanding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/buttonLoadData" />
+            android:text="@string/buttonLoadStanding" />
+        <Button
+            android:id="@+id/buttonLoadUpstairs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonLoadUpstairs" />
+        <Button
+            android:id="@+id/buttonLoadWalking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonLoadWalking" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textViewLoadData"

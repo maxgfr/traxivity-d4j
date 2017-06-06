@@ -1,38 +1,28 @@
 package com.maxgfr.traxivityd4j;
 
-import org.apache.commons.io.IOUtils;
-import org.deeplearning4j.nn.graph.ComputationGraph;
-import org.deeplearning4j.nn.modelimport.keras.InvalidKerasConfigurationException;
-import org.deeplearning4j.nn.modelimport.keras.KerasModelImport;
-import org.deeplearning4j.nn.modelimport.keras.UnsupportedKerasConfigurationException;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.util.ModelSerializer;
+import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
+import org.nd4j.linalg.indexing.NDArrayIndex;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * Created by maxime on 29-May-17.
  */
 
-public class LoadMultiLayerNetwork {
+public class NetworkManagement {
 
-    /** Instance unique non préinitialisée */
-    private static LoadMultiLayerNetwork INSTANCE = null;
+    private static NetworkManagement INSTANCE = null;
 
-    /** Constructeur privé */
-    private LoadMultiLayerNetwork() {
+    private NetworkManagement() {
     }
 
-    /** Point d'accès pour l'instance unique du singleton */
-    public static synchronized LoadMultiLayerNetwork getInstance() {
+    public static synchronized NetworkManagement getInstance() {
         if (INSTANCE == null)
-        { 	INSTANCE = new LoadMultiLayerNetwork();
+        { 	INSTANCE = new NetworkManagement();
         }
         return INSTANCE;
     }
@@ -47,5 +37,13 @@ public class LoadMultiLayerNetwork {
         MultiLayerNetwork restored = KerasModelImport.importKerasSequentialModelAndWeights(is);
         return restored;
     }*/
+
+    public void useNetwork (MultiLayerNetwork network, DataSetIterator iterator) {
+
+        INDArray networkOutput = network.output(iterator,true);
+
+        System.out.println("p(positive): " + networkOutput.getFloat(0));
+
+    }
 
 }
