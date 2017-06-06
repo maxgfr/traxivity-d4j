@@ -8,6 +8,8 @@ import android.widget.TextView;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import org.deeplearning4j.nn.modelimport.keras.InvalidKerasConfigurationException;
+import org.deeplearning4j.nn.modelimport.keras.UnsupportedKerasConfigurationException;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 
 import java.io.File;
@@ -16,17 +18,29 @@ import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button buttonLoadNetwork;
+    private Button buttonLoadD4J;
 
-    private TextView textViewLoadNetwork;
+    private TextView textViewLoadD4J;
+
+    private Button buttonLoadKeras;
+
+    private TextView textViewLoadKeras;
 
     private Button buttonLoadData;
 
     private TextView textViewLoadData;
 
-    private Button buttonTestNetwork;
+    private Button buttonTestD4J;
 
-    private MultiLayerNetwork network;
+    private TextView textViewTestD4J;
+
+    private Button buttonTestKeras;
+
+    private TextView textViewTestKeras;
+
+    private MultiLayerNetwork D4JNetwork;
+
+    private MultiLayerNetwork KerasNetwork;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,69 +48,101 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        buttonLoadNetwork = (Button) findViewById(R.id.buttonLoadNetwork);
-
-        textViewLoadNetwork = (TextView) findViewById(R.id.textViewLoadNetwork);
-
+        buttonLoadD4J = (Button) findViewById(R.id.buttonLoadD4J);
+        textViewLoadD4J = (TextView) findViewById(R.id.textViewLoadD4J);
+        buttonLoadKeras = (Button) findViewById(R.id.buttonLoadKeras);
+        textViewLoadKeras = (TextView) findViewById(R.id.textViewLoadKeras);
         buttonLoadData = (Button) findViewById(R.id.buttonLoadData);
-
         textViewLoadData = (TextView) findViewById(R.id.textViewLoadData);
+        buttonTestD4J = (Button) findViewById(R.id.buttonTestD4J);
+        textViewTestD4J = (TextView) findViewById(R.id.textViewTestD4J);
+        buttonTestKeras = (Button) findViewById(R.id.buttonTestKeras);
+        textViewTestKeras = (TextView) findViewById(R.id.textViewTestKeras);
 
-        buttonTestNetwork = (Button) findViewById(R.id.buttonTestNetwork);
-
-        initializeButton();;
-
+        initializeButton();
     }
 
     private void initializeButton () {
-        buttonLoadNetwork.setOnClickListener(new OnClickListener() {
+        buttonLoadD4J.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                boolean b = loadNetwork();
+                boolean b = loadNetworkFromD4J();
 
                 if (b) {
-                    textViewLoadNetwork.setText("Network loaded");
+                    textViewLoadD4J.setText("Network loaded");
                 } else {
-                    textViewLoadNetwork.setText("Error Network null...");
+                    textViewLoadD4J.setText("Error Network null...");
                 }
 
+            }
+        });
+
+        buttonLoadKeras.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                boolean b = loadNetworkFromKeras();
+                if (b) {
+                    textViewLoadKeras.setText("Network loaded");
+                } else {
+                    textViewLoadKeras.setText("Error Network null...");
+                }
             }
         });
 
         buttonLoadData.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-
                 textViewLoadData.setText("Data loaded");
             }
         });
 
-        buttonTestNetwork.setOnClickListener(new OnClickListener() {
+        buttonTestD4J.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-
-
+                textViewTestD4J.setText("Test D4J model");
             }
         });
+
+        buttonTestKeras.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                textViewTestKeras.setText("Test Keras model");
+            }
+        });
+
     }
 
-    private boolean loadNetwork () {
-
+    private boolean loadNetworkFromD4J () {
         LoadMultiLayerNetwork loadMultiLayerNetwork = LoadMultiLayerNetwork.getInstance();
-
         InputStream inputStream = getResources().openRawResource(R.raw.network_d4j);
-
         try {
-            network = loadMultiLayerNetwork.loadModelFromFile(inputStream);
+            D4JNetwork = loadMultiLayerNetwork.loadModelFromD4J(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if (network == null) {
+        if (D4JNetwork == null) {
             return false;
+        } else { return true;}
+
+    }
+
+    private boolean loadNetworkFromKeras () {
+        LoadMultiLayerNetwork loadMultiLayerNetwork = LoadMultiLayerNetwork.getInstance();
+        InputStream inputStream = getResources().openRawResource(R.raw.cnn_wrist_33);
+        try {
+            KerasNetwork = loadMultiLayerNetwork.loadModelFromKeras(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedKerasConfigurationException e) {
+            e.printStackTrace();
+        } catch (InvalidKerasConfigurationException e) {
+            e.printStackTrace();
         }
 
-        return true;
+        if (KerasNetwork == null) {
+            return false;
+        } else { return true;}
 
     }
 

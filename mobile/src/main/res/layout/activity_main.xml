@@ -12,16 +12,29 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/buttonLoadNetwork"
+            android:id="@+id/buttonLoadD4J"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/buttonLoadNetwork" />
+            android:text="@string/buttonLoadD4J" />
 
         <TextView
-            android:id="@+id/textViewLoadNetwork"
+            android:id="@+id/textViewLoadD4J"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/textViewLoadNetwork"
+            android:text="@string/textViewLoadD4J"
+            android:gravity="center_horizontal"/>
+
+        <Button
+            android:id="@+id/buttonLoadKeras"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonLoadKeras" />
+
+        <TextView
+            android:id="@+id/textViewLoadKeras"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textViewLoadKeras"
             android:gravity="center_horizontal"/>
 
         <Button
@@ -38,10 +51,30 @@
             android:gravity="center_horizontal"/>
 
         <Button
-            android:id="@+id/buttonTestNetwork"
+            android:id="@+id/buttonTestD4J"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/buttonTestNetwork" />
+            android:text="@string/buttonTestD4J" />
+
+        <TextView
+            android:id="@+id/textViewTestD4J"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textViewTestD4J"
+            android:gravity="center_horizontal"/>
+
+        <Button
+            android:id="@+id/buttonTestKeras"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonTestKeras" />
+
+        <TextView
+            android:id="@+id/textViewTestKeras"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textViewTestKeras"
+            android:gravity="center_horizontal"/>
     </TableLayout>
 
 

@@ -1,5 +1,8 @@
 package com.maxgfr.traxivityd4j;
 
+import org.deeplearning4j.nn.modelimport.keras.InvalidKerasConfigurationException;
+import org.deeplearning4j.nn.modelimport.keras.KerasModelImport;
+import org.deeplearning4j.nn.modelimport.keras.UnsupportedKerasConfigurationException;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.util.ModelSerializer;
 
@@ -31,8 +34,13 @@ public class LoadMultiLayerNetwork {
         return INSTANCE;
     }
 
-    public MultiLayerNetwork loadModelFromFile (InputStream locationToSave) throws IOException {
-        MultiLayerNetwork restored = ModelSerializer.restoreMultiLayerNetwork(locationToSave);
+    public MultiLayerNetwork loadModelFromD4J (InputStream is) throws IOException {
+        MultiLayerNetwork restored = ModelSerializer.restoreMultiLayerNetwork(is);
+        return restored;
+    }
+
+    public MultiLayerNetwork loadModelFromKeras (InputStream is) throws IOException, InvalidKerasConfigurationException, UnsupportedKerasConfigurationException {
+        MultiLayerNetwork restored = KerasModelImport.importKerasSequentialModelAndWeights(is);
         return restored;
     }
 
