@@ -1,5 +1,7 @@
 package com.maxgfr.traxivityd4j;
 
+import android.content.res.AssetManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +10,7 @@ import android.widget.TextView;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import org.deeplearning4j.nn.graph.ComputationGraph;
 import org.deeplearning4j.nn.modelimport.keras.InvalidKerasConfigurationException;
 import org.deeplearning4j.nn.modelimport.keras.UnsupportedKerasConfigurationException;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
@@ -131,15 +134,10 @@ public class MainActivity extends AppCompatActivity {
         LoadMultiLayerNetwork loadMultiLayerNetwork = LoadMultiLayerNetwork.getInstance();
         InputStream inputStream = getResources().openRawResource(R.raw.cnn_wrist_33);
         try {
-            KerasNetwork = loadMultiLayerNetwork.loadModelFromKeras(inputStream);
+            KerasNetwork = loadMultiLayerNetwork.loadModelFromD4J(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (UnsupportedKerasConfigurationException e) {
-            e.printStackTrace();
-        } catch (InvalidKerasConfigurationException e) {
-            e.printStackTrace();
         }
-
         if (KerasNetwork == null) {
             return false;
         } else { return true;}

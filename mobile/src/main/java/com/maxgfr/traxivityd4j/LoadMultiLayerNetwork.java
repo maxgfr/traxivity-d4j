@@ -1,11 +1,14 @@
 package com.maxgfr.traxivityd4j;
 
+import org.apache.commons.io.IOUtils;
+import org.deeplearning4j.nn.graph.ComputationGraph;
 import org.deeplearning4j.nn.modelimport.keras.InvalidKerasConfigurationException;
 import org.deeplearning4j.nn.modelimport.keras.KerasModelImport;
 import org.deeplearning4j.nn.modelimport.keras.UnsupportedKerasConfigurationException;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.util.ModelSerializer;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -39,9 +42,10 @@ public class LoadMultiLayerNetwork {
         return restored;
     }
 
-    public MultiLayerNetwork loadModelFromKeras (InputStream is) throws IOException, InvalidKerasConfigurationException, UnsupportedKerasConfigurationException {
+    /*//0.8.0 of D4J : throw new UnsupportedOperationException("Reading HDF5 files from InputStreams currently unsupported.");
+    public MultiLayerNetwork loadModelFromKeras (InputStream is) throws InvalidKerasConfigurationException, IOException, UnsupportedKerasConfigurationException {
         MultiLayerNetwork restored = KerasModelImport.importKerasSequentialModelAndWeights(is);
         return restored;
-    }
+    }*/
 
 }
