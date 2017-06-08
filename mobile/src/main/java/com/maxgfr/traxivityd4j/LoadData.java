@@ -36,10 +36,8 @@ public class LoadData {
     public void createSetDataFromInputStream (InputStream is) throws IOException, InterruptedException {
 
         int batchSize = 500;
-
         RecordReader rr = new CSVRecordReader(1,",");
         rr.initialize(new InputStreamInputSplit(is));
-
         dataSetIterator = new RecordReaderDataSetIterator(rr, batchSize);
 
     }

@@ -164,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
         buttonTestD4J.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                testD4JNetwork();
                 textViewTestD4J.setText("Test D4J model");
                 buttonTestD4J.setEnabled(false);
             }
@@ -172,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
         buttonTestKeras.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                testKerasNetwork();
                 textViewTestKeras.setText("Test Keras model");
                 buttonTestKeras.setEnabled(false);
             }
@@ -257,6 +259,11 @@ public class MainActivity extends AppCompatActivity {
         NetworkManagement networkManagement = NetworkManagement.getInstance();
         LoadData loadData = LoadData.getInstance();
         networkManagement.useNetwork(D4JNetwork,loadData.getData());
+    }
+
+    private void testKerasNetwork () {
+        NetworkManagement networkManagement = NetworkManagement.getInstance();
+        LoadData loadData = LoadData.getInstance();
     }
 
 }
