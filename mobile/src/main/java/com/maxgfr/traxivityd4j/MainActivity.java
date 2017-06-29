@@ -10,6 +10,8 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
+import org.nd4j.linalg.dataset.DataSet;
+import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     private MultiLayerNetwork D4JNetwork;
     private MultiLayerNetwork KerasNetwork;
+    private DataSetIterator iterator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         initializeView();
 
         setButton();
+
+        disableAllDataButton();
     }
 
     private void initializeView () {
@@ -87,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     textViewLoadD4J.setText("Error Network null...");
                 }
                 buttonLoadD4J.setEnabled(false);
+                enableAllDataButton();
 
             }
         });
@@ -103,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                     textViewLoadKeras.setText("Error Network null...");
                 }
                 buttonLoadKeras.setEnabled(false);
+                enableAllDataButton();
             }
         });
 
@@ -110,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 textViewLoadData.setText("Downstairs data loaded");
-                disableAllDataButton();
                 loadData(DOWNSTAIRS_DATA);
             }
         });
@@ -120,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 textViewLoadData.setText("Jogging data loaded");
-                disableAllDataButton();
                 loadData(JOGGING_DATA);
             }
         });
@@ -129,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 textViewLoadData.setText("Sitting data loaded");
-                disableAllDataButton();
                 loadData(SITTING_DATA);
             }
         });
@@ -138,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 textViewLoadData.setText("Standing data loaded");
-                disableAllDataButton();
                 loadData(STANDING_DATA);
             }
         });
@@ -147,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 textViewLoadData.setText("Upstairs data loaded");
-                disableAllDataButton();
                 loadData(UPSTAIRS_DATA);
             }
         });
@@ -156,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 textViewLoadData.setText("Walking data loaded");
-                disableAllDataButton();
                 loadData(WALKING_DATA);
             }
         });
@@ -190,6 +191,15 @@ public class MainActivity extends AppCompatActivity {
         buttonLoadWalking.setEnabled(false);
     }
 
+    private void enableAllDataButton () {
+        buttonLoadDownstairs.setEnabled(true);
+        buttonLoadJogging.setEnabled(true);
+        buttonLoadSitting.setEnabled(true);
+        buttonLoadStanding.setEnabled(true);
+        buttonLoadUpstairs.setEnabled(true);
+        buttonLoadWalking.setEnabled(true);
+    }
+
     private boolean loadNetworkFromD4J () {
         NetworkManagement networkManagement = NetworkManagement.getInstance();
         InputStream inputStream = getResources().openRawResource(R.raw.network_d4j);
@@ -220,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadData (int value) {
-        LoadData loadData = LoadData.getInstance();
+        LoadData loadData = LoadData.getInstance(1,3,500);
         InputStream inputStream = null;
         switch (value) {
             case DOWNSTAIRS_DATA :
@@ -246,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         try {
-            loadData.createSetDataFromInputStream(inputStream);
+            iterator = loadData.createSetDataFromInputStream(inputStream);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -257,14 +267,35 @@ public class MainActivity extends AppCompatActivity {
 
     private void testD4JNetwork () {
         NetworkManagement networkManagement = NetworkManagement.getInstance();
-        LoadData loadData = LoadData.getInstance();
-        networkManagement.useNetwork(D4JNetwork,loadData.getData());
+        int res = networkManagement.useNetwork(D4JNetwork,iterator);
+        toastRes(res);
     }
 
     private void testKerasNetwork () {
         NetworkManagement networkManagement = NetworkManagement.getInstance();
-        LoadData loadData = LoadData.getInstance();
     }
 
+    private void toastRes (int x) {
+        switch (x) {
+            case 0:  Toast.makeText(this, "Downstairs",
+                    Toast.LENGTH_LONG).show();
+                break;
+            case 1:  Toast.makeText(this, "Jogging",
+                    Toast.LENGTH_LONG).show();
+                break;
+            case 2:  Toast.makeText(this, "Sitting",
+                    Toast.LENGTH_LONG).show();
+                break;
+            case 3:  Toast.makeText(this, "Standing",
+                    Toast.LENGTH_LONG).show();
+                break;
+            case 4:  Toast.makeText(this, "Upstairs",
+                    Toast.LENGTH_LONG).show();
+                break;
+            case 5: Toast.makeText(this, "Walking",
+                    Toast.LENGTH_LONG).show();;
+                break;
+        }
+    }
 }
 

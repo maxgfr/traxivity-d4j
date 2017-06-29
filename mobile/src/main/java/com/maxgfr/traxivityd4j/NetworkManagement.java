@@ -12,7 +12,11 @@ import org.nd4j.linalg.indexing.NDArrayIndex;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by maxime on 29-May-17.
@@ -43,32 +47,74 @@ public class NetworkManagement {
         return restored;
     }*/
 
-    public void useNetwork (MultiLayerNetwork network, DataSetIterator iterator) {
-        //batch size = 500 for eachDataSet
+    public int useNetwork (MultiLayerNetwork network, DataSetIterator it) {
         int i = 0;
-        //while (iterator.hasNext()) {
-            for (int j = 0 ; j<10 ; j++){
-            DataSet dataSet = iterator.next();
-            network.output(dataSet.getFeatureMatrix(),false);
+        System.out.println("Prediction is starting");
+        List<Integer> list = new LinkedList<Integer>();
+
+        while (it.hasNext()) {
+            DataSet ds = it.next();
+            int[] ls = network.predict(ds.getFeatureMatrix());
+            for(int s : ls) {
+                list.add(s);
+            }
             i++;
-            System.out.println(i);
         }
 
-        System.out.println(network.getIndex());
+        dispOccurence(list);
 
+        System.out.println("Analysis finished");
 
+        int res = mostCommon(list);
 
-        /*allData.shuffle();
-        DataNormalization normalizer = new NormalizerStandardize();
-        normalizer.fit(allData);
-        normalizer.transform(allData);
-        INDArray array = allData.getFeatures();
-        int[] res = network.predict(array);
-        for (int i : res){
-            System.out.println(i);
-        }*/
-
-
+        return res;
     }
+
+    private <T> T mostCommon(List<T> list) {
+        Map<T, Integer> map = new HashMap<>();
+
+        for (T t : list) {
+            Integer val = map.get(t);
+            map.put(t, val == null ? 1 : val + 1);
+        }
+
+        Map.Entry<T, Integer> max = null;
+
+        for (Map.Entry<T, Integer> e : map.entrySet()) {
+            if (max == null || e.getValue() > max.getValue())
+                max = e;
+        }
+
+        return max.getKey();
+    }
+
+    private void dispOccurence (List<Integer> myList) {
+        int downstairs,jogging,sitting,standing,upstairs,walking;
+        downstairs=jogging=sitting=standing=upstairs=walking = 0;
+        for (Integer x : myList) {
+            switch (x) {
+                case 0:  downstairs++;
+                    break;
+                case 1:  jogging++;
+                    break;
+                case 2:  sitting++;
+                    break;
+                case 3:  standing++;
+                    break;
+                case 4:  upstairs++;
+                    break;
+                case 5: walking++;
+                    break;
+            }
+        }
+        System.out.println("Number of occurrence :" +
+                "\nfor downstairs is "+downstairs+
+                "\nfor jogging is "+jogging+
+                "\nfor sitting is "+sitting+
+                "\nfor standing is "+ standing+
+                "\nfor upstairs is " +upstairs+
+                "\nfor walking is " +walking);
+    }
+
 
 }
