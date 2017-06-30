@@ -36,10 +36,6 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonLoadUpstairs;
     private Button buttonLoadWalking;
     private TextView textViewLoadData;
-    private Button buttonTestD4J;
-    private TextView textViewTestD4J;
-    private Button buttonTestKeras;
-    private TextView textViewTestKeras;
 
     private MultiLayerNetwork D4JNetwork;
     private MultiLayerNetwork KerasNetwork;
@@ -70,12 +66,6 @@ public class MainActivity extends AppCompatActivity {
         buttonLoadUpstairs = (Button) findViewById(R.id.buttonLoadUpstairs);
         buttonLoadWalking = (Button) findViewById(R.id.buttonLoadWalking);
         textViewLoadData = (TextView) findViewById(R.id.textViewLoadData);
-        buttonTestD4J = (Button) findViewById(R.id.buttonTestD4J);
-        textViewTestD4J = (TextView) findViewById(R.id.textViewTestD4J);
-        buttonTestKeras = (Button) findViewById(R.id.buttonTestKeras);
-        textViewTestKeras = (TextView) findViewById(R.id.textViewTestKeras);
-        buttonTestD4J.setEnabled(false);
-        buttonTestKeras.setEnabled(false);
     }
 
     private void setButton () {
@@ -86,12 +76,12 @@ public class MainActivity extends AppCompatActivity {
 
                 if (b) {
                     textViewLoadD4J.setText("Network loaded");
-                    buttonTestD4J.setEnabled(true);
 
                 } else {
                     textViewLoadD4J.setText("Error Network null...");
                 }
                 buttonLoadD4J.setEnabled(false);
+                buttonLoadKeras.setEnabled(false);
                 enableAllDataButton();
 
             }
@@ -103,12 +93,12 @@ public class MainActivity extends AppCompatActivity {
                 boolean b = loadNetworkFromKeras();
                 if (b) {
                     textViewLoadKeras.setText("Network loaded");
-                    buttonTestKeras.setEnabled(true);
 
                 } else {
                     textViewLoadKeras.setText("Error Network null...");
                 }
                 buttonLoadKeras.setEnabled(false);
+                buttonLoadD4J.setEnabled(false);
                 enableAllDataButton();
             }
         });
@@ -159,24 +149,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 textViewLoadData.setText("Walking data loaded");
                 loadData(WALKING_DATA);
-            }
-        });
-
-        buttonTestD4J.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                testD4JNetwork();
-                textViewTestD4J.setText("Test D4J model");
-                buttonTestD4J.setEnabled(false);
-            }
-        });
-
-        buttonTestKeras.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                testKerasNetwork();
-                textViewTestKeras.setText("Test Keras model");
-                buttonTestKeras.setEnabled(false);
             }
         });
 
@@ -261,6 +233,13 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        if (D4JNetwork != null) {
+            testD4JNetwork();
+        }
+        if (KerasNetwork != null) {
+            testKerasNetwork();
         }
 
     }

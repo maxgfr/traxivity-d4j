@@ -84,31 +84,6 @@
             android:text="@string/textViewLoadData"
             android:gravity="center_horizontal"/>
 
-        <Button
-            android:id="@+id/buttonTestD4J"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/buttonTestD4J" />
-
-        <TextView
-            android:id="@+id/textViewTestD4J"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/textViewTestD4J"
-            android:gravity="center_horizontal"/>
-
-        <Button
-            android:id="@+id/buttonTestKeras"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/buttonTestKeras" />
-
-        <TextView
-            android:id="@+id/textViewTestKeras"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/textViewTestKeras"
-            android:gravity="center_horizontal"/>
     </TableLayout>
 
 

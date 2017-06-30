@@ -7,13 +7,11 @@ import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.nd4j.linalg.factory.Nd4j;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -45,9 +43,15 @@ public class LoadData {
 
         List<INDArray> datas = getData(is);
 
-        List<INDArray> fakeLabel = createFalseRandLabels(6,datas.size());
+        int size = datas.size();
 
-        ArrayList<Pair> featuresAndLabels = mergeFeaturesWithLabels(datas,fakeLabel);
+        List<INDArray> fakeLabel = createFalseRandLabels(6,size);
+
+        ArrayList<Pair> fat = mergeFeaturesWithLabels(datas,fakeLabel);
+
+        List<Pair> featuresAndLabels = pickNRandom(fat,6);
+
+        System.out.println("New size : "+featuresAndLabels.size());
 
         Iterable featLab = featuresAndLabels;
 
@@ -129,6 +133,12 @@ public class LoadData {
             }
         }
         return datas;
+    }
+
+    private List<Pair> pickNRandom(ArrayList<Pair> lst, int n) {
+        List<Pair> copy = new ArrayList<Pair>(lst);
+        Collections.shuffle(copy);
+        return copy.subList(0, n);
     }
 
 }
