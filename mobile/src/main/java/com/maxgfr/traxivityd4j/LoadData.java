@@ -61,6 +61,22 @@ public class LoadData {
 
     }
 
+    public DataSetIterator createSetDataFromList (List<Float> x, List<Float> y, List<Float> z) {
+
+        List<INDArray> datas = getDataList(x,y,z);
+
+        List<INDArray> fakeLabel = createFalseRandLabels(6, datas.size());
+
+        ArrayList<Pair> featuresAndLabels = mergeFeaturesWithLabels(datas,fakeLabel);
+
+        Iterable featLab = featuresAndLabels;
+
+        INDArrayDataSetIterator ds = new INDArrayDataSetIterator(featLab, 1);
+
+        return ds;
+
+    }
+
     private List<INDArray> createFalseRandLabels(int numOutcomes,int numSamples){
 
         List<INDArray> falseTarget= new ArrayList<INDArray>();
@@ -139,6 +155,26 @@ public class LoadData {
         List<Pair> copy = new ArrayList<Pair>(lst);
         Collections.shuffle(copy);
         return copy.subList(0, n);
+    }
+
+    private List<INDArray> getDataList (List<Float> axis_x, List<Float> axis_y, List<Float> axis_z) {
+
+        List<INDArray> datas = new ArrayList<INDArray>();
+        INDArray myArray = Nd4j.zeros(1,nDepth, nHeight,nWidth);
+
+        for (int i = 0; i < 500; i++) {
+            myArray.putScalar(0,0,0,i,axis_x.get(i));
+        }
+        for (int i = 0; i < 500; i++) {
+            myArray.putScalar(0,1,0,i,axis_y.get(i));
+        }
+        for (int i = 0; i < 500; i++) {
+            myArray.putScalar(0,2,0,i,axis_z.get(i));
+        }
+
+        datas.add(myArray);
+
+        return datas;
     }
 
 }

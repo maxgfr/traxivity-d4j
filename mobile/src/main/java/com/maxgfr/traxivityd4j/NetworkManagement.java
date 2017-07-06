@@ -47,6 +47,13 @@ public class NetworkManagement {
         return restored;
     }*/
 
+    public INDArray useNetworkMatrix (MultiLayerNetwork network, DataSetIterator it) {
+        System.out.println("Prediction is starting");
+        INDArray prob = network.output(it);
+        System.out.println(prob);
+        return prob;
+    }
+
     public int useNetwork (MultiLayerNetwork network, DataSetIterator it) {
         int i = 0;
         System.out.println("Prediction is starting");

@@ -1,5 +1,10 @@
 package com.maxgfr.traxivityd4j;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
@@ -10,36 +15,33 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.nd4j.linalg.dataset.DataSet;
+import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-
-    private static final int DOWNSTAIRS_DATA = 0;
-    private static final int JOGGING_DATA = 1;
-    private static final int SITTING_DATA = 2;
-    private static final int STANDING_DATA = 3;
-    private static final int UPSTAIRS_DATA = 4;
-    private static final int WALKING_DATA = 5;
+public class MainActivity extends AppCompatActivity  implements SensorEventListener {
 
     private Button buttonLoadD4J;
     private TextView textViewLoadD4J;
-    private Button buttonLoadKeras;
-    private TextView textViewLoadKeras;
-    private Button buttonLoadDownstairs;
-    private Button buttonLoadJogging;
-    private Button buttonLoadSitting;
-    private Button buttonLoadStanding;
-    private Button buttonLoadUpstairs;
-    private Button buttonLoadWalking;
-    private TextView textViewLoadData;
+    private TextView textViewDownstairs;
+    private TextView textViewUpstairs;
+    private TextView textViewWalking;
+    private TextView textViewSitting;
+    private TextView textViewJogging;
+    private TextView textViewStanding;
 
+    private static final int N_SAMPLES = 500;
     private MultiLayerNetwork D4JNetwork;
-    private MultiLayerNetwork KerasNetwork;
-    private DataSetIterator iterator;
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private static List<Float> x;
+    private static List<Float> y;
+    private static List<Float> z;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,26 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
         initializeView();
 
-        setButton();
-
-        disableAllDataButton();
-    }
-
-    private void initializeView () {
-        buttonLoadD4J = (Button) findViewById(R.id.buttonLoadD4J);
-        textViewLoadD4J = (TextView) findViewById(R.id.textViewLoadD4J);
-        buttonLoadKeras = (Button) findViewById(R.id.buttonLoadKeras);
-        textViewLoadKeras = (TextView) findViewById(R.id.textViewLoadKeras);
-        buttonLoadDownstairs = (Button) findViewById(R.id.buttonLoadDownstairs);
-        buttonLoadJogging = (Button) findViewById(R.id.buttonLoadJogging);
-        buttonLoadSitting = (Button) findViewById(R.id.buttonLoadSitting);
-        buttonLoadStanding = (Button) findViewById(R.id.buttonLoadStanding);
-        buttonLoadUpstairs = (Button) findViewById(R.id.buttonLoadUpstairs);
-        buttonLoadWalking = (Button) findViewById(R.id.buttonLoadWalking);
-        textViewLoadData = (TextView) findViewById(R.id.textViewLoadData);
-    }
-
-    private void setButton () {
         buttonLoadD4J.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -81,95 +63,38 @@ public class MainActivity extends AppCompatActivity {
                     textViewLoadD4J.setText("Error Network null...");
                 }
                 buttonLoadD4J.setEnabled(false);
-                buttonLoadKeras.setEnabled(false);
-                enableAllDataButton();
 
             }
         });
 
-        buttonLoadKeras.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                boolean b = loadNetworkFromKeras();
-                if (b) {
-                    textViewLoadKeras.setText("Network loaded");
+        x = new ArrayList<Float>();
+        y = new ArrayList<Float>();
+        z = new ArrayList<Float>();
 
-                } else {
-                    textViewLoadKeras.setText("Error Network null...");
-                }
-                buttonLoadKeras.setEnabled(false);
-                buttonLoadD4J.setEnabled(false);
-                enableAllDataButton();
-            }
-        });
-
-        buttonLoadDownstairs.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                textViewLoadData.setText("Downstairs data loaded");
-                loadData(DOWNSTAIRS_DATA);
-            }
-        });
-
-
-        buttonLoadJogging.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                textViewLoadData.setText("Jogging data loaded");
-                loadData(JOGGING_DATA);
-            }
-        });
-
-        buttonLoadSitting.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                textViewLoadData.setText("Sitting data loaded");
-                loadData(SITTING_DATA);
-            }
-        });
-
-        buttonLoadStanding.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                textViewLoadData.setText("Standing data loaded");
-                loadData(STANDING_DATA);
-            }
-        });
-
-        buttonLoadUpstairs.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                textViewLoadData.setText("Upstairs data loaded");
-                loadData(UPSTAIRS_DATA);
-            }
-        });
-
-        buttonLoadWalking.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                textViewLoadData.setText("Walking data loaded");
-                loadData(WALKING_DATA);
-            }
-        });
-
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mSensorManager.registerListener(this, mAccelerometer , SensorManager.SENSOR_DELAY_FASTEST);
     }
 
-    private void disableAllDataButton () {
-        buttonLoadDownstairs.setEnabled(false);
-        buttonLoadJogging.setEnabled(false);
-        buttonLoadSitting.setEnabled(false);
-        buttonLoadStanding.setEnabled(false);
-        buttonLoadUpstairs.setEnabled(false);
-        buttonLoadWalking.setEnabled(false);
+    protected void onPause() {
+        super.onPause();
+        mSensorManager.unregisterListener(this);
     }
 
-    private void enableAllDataButton () {
-        buttonLoadDownstairs.setEnabled(true);
-        buttonLoadJogging.setEnabled(true);
-        buttonLoadSitting.setEnabled(true);
-        buttonLoadStanding.setEnabled(true);
-        buttonLoadUpstairs.setEnabled(true);
-        buttonLoadWalking.setEnabled(true);
+    protected void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+    }
+
+    private void initializeView () {
+        buttonLoadD4J = (Button) findViewById(R.id.buttonLoadD4J);
+        textViewLoadD4J = (TextView) findViewById(R.id.textViewLoadD4J);
+        textViewDownstairs = (TextView) findViewById(R.id.textViewDownstairs);
+        textViewJogging = (TextView) findViewById(R.id.textViewJogging);
+        textViewSitting = (TextView) findViewById(R.id.textViewSitting);
+        textViewStanding = (TextView) findViewById(R.id.textViewStanding);
+        textViewUpstairs = (TextView) findViewById(R.id.textViewUpstairs);
+        textViewWalking = (TextView) findViewById(R.id.textViewWalking);
     }
 
     private boolean loadNetworkFromD4J () {
@@ -185,73 +110,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         } else { return true;}
 
-    }
-
-    private boolean loadNetworkFromKeras () {
-        NetworkManagement networkManagement = NetworkManagement.getInstance();
-        /*InputStream inputStream = getResources().openRawResource(0);
-        try {
-            KerasNetwork = networkManagement.loadModelFromD4J(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-        if (KerasNetwork == null) {
-            return false;
-        } else { return true;}
-
-    }
-
-    private void loadData (int value) {
-        LoadData loadData = LoadData.getInstance(1,3,500);
-        InputStream inputStream = null;
-        switch (value) {
-            case DOWNSTAIRS_DATA :
-                inputStream = getResources().openRawResource(R.raw.downstairs);
-                break;
-            case JOGGING_DATA :
-                inputStream = getResources().openRawResource(R.raw.jogging);
-                break;
-            case SITTING_DATA :
-                inputStream = getResources().openRawResource(R.raw.sitting);
-                break;
-            case STANDING_DATA :
-                inputStream = getResources().openRawResource(R.raw.standing);
-                break;
-            case UPSTAIRS_DATA :
-                inputStream = getResources().openRawResource(R.raw.upstairs);
-                break;
-            case WALKING_DATA :
-                inputStream = getResources().openRawResource(R.raw.walking);
-                break;
-            default:
-                Toast.makeText(this, "Problem to load Data!", Toast.LENGTH_LONG).show();
-                break;
-        }
-        try {
-            iterator = loadData.createSetDataFromInputStream(inputStream);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if (D4JNetwork != null) {
-            testD4JNetwork();
-        }
-        if (KerasNetwork != null) {
-            testKerasNetwork();
-        }
-
-    }
-
-    private void testD4JNetwork () {
-        NetworkManagement networkManagement = NetworkManagement.getInstance();
-        int res = networkManagement.useNetwork(D4JNetwork,iterator);
-        toastRes(res);
-    }
-
-    private void testKerasNetwork () {
-        NetworkManagement networkManagement = NetworkManagement.getInstance();
     }
 
     private void toastRes (int x) {
@@ -275,6 +133,42 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();;
                 break;
         }
+    }
+
+    private void dispRes (INDArray array) {
+        textViewDownstairs.setText(array.getRow(0).getColumn(0).toString());
+        textViewJogging.setText(array.getRow(0).getColumn(1).toString());
+        textViewSitting.setText(array.getRow(0).getColumn(2).toString());
+        textViewStanding.setText(array.getRow(0).getColumn(3).toString());
+        textViewUpstairs.setText(array.getRow(0).getColumn(4).toString());
+        textViewWalking.setText(array.getRow(0).getColumn(5).toString());
+    }
+
+    private void activityPrediction() {
+        if(x.size() == N_SAMPLES && y.size() == N_SAMPLES && z.size() == N_SAMPLES) {
+            LoadData loadData = LoadData.getInstance(1,3,N_SAMPLES);
+            NetworkManagement networkManagement = NetworkManagement.getInstance();
+            DataSetIterator iterator = loadData.createSetDataFromList(x,y,z);
+            dispRes(networkManagement.useNetworkMatrix(D4JNetwork,iterator));
+            x.clear();
+            y.clear();
+            z.clear();
+        }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (D4JNetwork != null) {
+            activityPrediction();
+            x.add(event.values[0]);
+            y.add(event.values[1]);
+            z.add(event.values[2]);
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }
 
